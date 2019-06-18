@@ -11,27 +11,27 @@ public class BillingController {
     @Autowired
     private BillingService billingService;
 
-    @GetMapping(path = "/customer")
+    @GetMapping(path = "/billing")
     public ResponseEntity<Object> retriveAll() {
         return billingService.getAll();
     }
 
-    @GetMapping(path = "/customer/{id}")
+    @GetMapping(path = "/billing/{id}")
     public ResponseEntity<Object> retriveOne(@PathVariable Integer id) {
         return billingService.getOne(id);
     }
 
-    @PostMapping(path = "/customer")
+    @PostMapping(path = "/billing")
     public ResponseEntity<Object> create(@RequestBody Billing billing) {
         return billingService.insert(billing);
     }
 
-    @PutMapping(path = "/customer/{id}")
+    @PutMapping(path = "/billing/{id}")
     public ResponseEntity<Object> update(@PathVariable Integer id, @RequestBody Billing billing) {
         return billingService.update(id, billing);
     }
 
-    @DeleteMapping(path = "/customer/{id}")
+    @DeleteMapping(path = "/billing/{id}")
     public ResponseEntity<Object> delete(@PathVariable Integer id) {
         return billingService.delete(id);
     }
