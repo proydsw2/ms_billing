@@ -2,6 +2,7 @@ package com.cibertec.ms_billing.Service.Implement;
 
 import com.cibertec.ms_billing.Model.Billing;
 import com.cibertec.ms_billing.Repository.BillingRepository;
+import com.cibertec.ms_billing.Service.BillingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,87 +17,88 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class BillingServiceImpl {
-    @PersistenceContext
-    private EntityManager em;
+public class BillingServiceImpl implements BillingService {
 
-    @Autowired
-    BillingRepository billingRepository;
+   @PersistenceContext
+   private EntityManager em;
 
-    public ResponseEntity<Object> getAll() {
-        try {
-            List<Billing> billings = billingRepository.findAll();
+   @Autowired
+   BillingRepository billingRepository;
 
-            if (billings == null) {
-                return ResponseEntity.notFound().build();
-            }
+   public ResponseEntity<Object> getAll() {
+      try {
+         List<Billing> billings = billingRepository.findAll();
 
-            return ResponseEntity.ok().body(billings);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+         if (billings == null) {
+            return ResponseEntity.notFound().build();
+         }
 
-    public ResponseEntity<Object> getOne(Integer id) {
-        try {
-            Optional<Billing> billing = billingRepository.findById(id);
+         return ResponseEntity.ok().body(billings);
+      } catch (Exception e) {
+         return ResponseEntity.badRequest().build();
+      }
+   }
 
-            if (!billing.isPresent()) {
-                return ResponseEntity.notFound().build();
-            }
+   public ResponseEntity<Object> getOne(Integer id) {
+      try {
+         Optional<Billing> billing = billingRepository.findById(id);
 
-            return ResponseEntity.ok().body(billing);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
-    }
+         if (!billing.isPresent()) {
+            return ResponseEntity.notFound().build();
+         }
 
-    public ResponseEntity<Object> insert(Billing billing) {
-        try {
-            Billing entity = billingRepository.save(billing);
+         return ResponseEntity.ok().body(billing);
+      } catch (Exception e) {
+         e.printStackTrace();
+         return ResponseEntity.badRequest().build();
+      }
+   }
 
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(entity.getNum_billing_id()).toUri();
+   public ResponseEntity<Object> insert(Billing billing) {
+      try {
+         Billing entity = billingRepository.save(billing);
 
-            return ResponseEntity.ok().body(entity);
+         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+           .buildAndExpand(entity.getNum_billing_id()).toUri();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
-    }
+         return ResponseEntity.ok().body(entity);
 
-    public ResponseEntity<Object> update(Integer id, Billing billing) {
-        try {
-            Optional<Billing> entity = billingRepository.findById(id);
+      } catch (Exception e) {
+         e.printStackTrace();
+         return ResponseEntity.badRequest().build();
+      }
+   }
 
-            if (!entity.isPresent()) {
-                return ResponseEntity.notFound().build();
-            }
+   public ResponseEntity<Object> update(Integer id, Billing billing) {
+      try {
+         Optional<Billing> entity = billingRepository.findById(id);
 
-            billing.setNum_billing_id(id);
-            Billing bill = billingRepository.save(billing);
-            return ResponseEntity.ok().body(bill);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
-    }
+         if (!entity.isPresent()) {
+            return ResponseEntity.notFound().build();
+         }
 
-    public ResponseEntity<Object> delete(Integer id) {
+         billing.setNum_billing_id(id);
+         Billing bill = billingRepository.save(billing);
+         return ResponseEntity.ok().body(bill);
+      } catch (Exception e) {
+         e.printStackTrace();
+         return ResponseEntity.badRequest().build();
+      }
+   }
 
-        try {
-            Optional<Billing> entity = billingRepository.findById(id);
-            if (!entity.isPresent()) {
-                return ResponseEntity.notFound().build();
-            }
-            billingRepository.deleteById(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
-    }
+   public ResponseEntity<Object> delete(Integer id) {
+
+      try {
+         Optional<Billing> entity = billingRepository.findById(id);
+         if (!entity.isPresent()) {
+            return ResponseEntity.notFound().build();
+         }
+         billingRepository.deleteById(id);
+         return ResponseEntity.ok().build();
+      } catch (Exception e) {
+         e.printStackTrace();
+         return ResponseEntity.badRequest().build();
+      }
+   }
 
 }

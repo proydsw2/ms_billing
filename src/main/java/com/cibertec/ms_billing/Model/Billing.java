@@ -18,5 +18,5 @@ public class Billing {
     private Integer num_user_id;
 
     @Column(name = "dte_billing_date")
-    private Integer dte_billing_date;
+    private String dte_billing_date;
 }
